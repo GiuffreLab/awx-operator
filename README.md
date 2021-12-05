@@ -39,7 +39,7 @@ you are now working in the `awx` namespace
 kubectl apply -f awx-demo.yaml
 ```
 
-The above command deploys `postgres` & `awx` instance. This will take some time. you can watch with the get pods command again
+The above command deploys a `postgres` & `awx` instance. you can watch with the get pods command again
 
 # Accessing awx webui
 
