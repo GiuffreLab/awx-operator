@@ -1,4 +1,4 @@
-# awx setup in kubernetes using awx operator
+# Deploy AWX Operator on a k3s Kubernetes environment
 
 # Pre-requisite
 
