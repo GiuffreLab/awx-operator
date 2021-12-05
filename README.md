@@ -12,7 +12,7 @@ makesure you have kubernetes running on a host with atleast 4 cpus & 6GB ram.
 kubectl apply -f awx-resources.yaml
 ```
 
-**Note**: the above command creates an `awx` namespace and deploys awx operator in the `awx` namespace. Ensure that pod is in a running state prior to proceeding. you can watch in real time with
+**Note**: the above command creates an `awx` namespace and deploys awx operator. Ensure that pod is in a running state prior to proceeding. you can watch in real time with
 
 ```
 watch kubectl get pods
