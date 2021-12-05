@@ -1,4 +1,4 @@
-# Deploy AWX Operator on a k3s Kubernetes environment
+# awx setup in kubernetes using awx operator
 
 # Pre-requisite
 
@@ -70,10 +70,35 @@ ports:
 
 use the `down arrow` then hit the `instert` key, then make the change, hit `esc`, then type `:wq!`
 
-you should now be able to access awx via your web browser. before doing that you need to get the base admin password by entering the following
+check again with
+
+```
+kubectl get svc -l "app.kubernetes.io/managed-by=awx-operator"
+```
+
+as an example it is now on `port 32000`
+
+```
+NAME                TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+awx-demo-postgres   ClusterIP   None          <none>        5432/TCP       34h
+awx-demo-service    NodePort    10.43.43.87   <none>        80:32000/TCP   34h
+```
+
+next you will need to forward the service by doing the following in a separate terminal that you do not `ctrl-c` out of. just close the terminal
+
+```
+kubectl port-forward service/awx-demo-service 80:32000
+```
+
+it should return something like this
+
+```
+Forwarding from 127.0.0.1:80 -> 32000
+Forwarding from [::1]:80 -> 32000
+```
+
+you should now be able to access awx via your web browser on your chosen port such as `http://<host-ip>:32000`. before doing that you need to get the base admin password by entering the following
 
 `kubectl get secret awx-demo-admin-password -o jsonpath="{.data.password}" | base64 --decode`
-
-go to the browser & open the endpoint
 
 username: admin
