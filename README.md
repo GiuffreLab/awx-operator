@@ -2,7 +2,7 @@
 
 # Pre-requisite
 
-makesure you have kubernetes cluster running with atleast 4 cpus & 6GB ram.
+makesure you have kubernetes running on a host with atleast 4 cpus & 6GB ram.
 
 # Deploying awx operator, postgres, awx
 
