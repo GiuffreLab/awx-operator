@@ -1,5 +1,9 @@
 # Deploy AWX-Operator on a Kubernetes node
 
+# Version to install
+
+`0.15.0`
+
 # Pre-requisite
 
 makesure you have kubernetes running on a host with atleast 4 cpus & 6GB ram.
