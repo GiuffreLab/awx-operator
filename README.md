@@ -6,7 +6,7 @@ makesure you have kubernetes running on a host with atleast 4 cpus & 6GB ram.
 
 # Deploying awx operator, postgres, awx
 
-**awx operator installation**
+**AWX-Operator installation**
 
 ```
 kubectl apply -f awx-resources.yaml
@@ -21,7 +21,8 @@ watch kubectl get pods
 hit `ctrl-c` to exit
 
 
-**changing the context**
+
+**Changing the context**
 
 Lets change the context to `awx` namespace by executing the below command.
 
@@ -33,6 +34,8 @@ you are now working in the `awx` namespace
 
 **note**: you may need `sudo` for this command if it fails
 
+
+
 **Deploying the awx instance**
 
 ```
@@ -41,7 +44,10 @@ kubectl apply -f awx-demo.yaml
 
 The above command deploys a `postgres` & `awx` instance. you can watch with the get pods command again
 
+
+
 # Accessing awx webui
+
 
 **Forward Ports to access the pod**
 
@@ -107,6 +113,7 @@ it should return something like this
 Forwarding from 127.0.0.1:80 -> 32000
 Forwarding from [::1]:80 -> 32000
 ```
+
 
 **Getting password and logging in**
 
