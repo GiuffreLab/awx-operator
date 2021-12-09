@@ -126,4 +126,3 @@ you should now be able to access `AWX-Operator` via web browser on your chosen p
 `kubectl get secret awx-demo-admin-password -o jsonpath="{.data.password}" | base64 --decode`
 
 username: admin
-Testing changes
