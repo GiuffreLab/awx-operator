@@ -122,6 +122,8 @@ Forwarding from [::1]:80 -> 32000
 
 you should now be able to access `AWX-Operator` via web browser on your chosen port such as `http://<host-ip>:32000`. before doing that you need to get the default admin password by entering the following
 
-`kubectl get secret awx-demo-admin-password -o jsonpath="{.data.password}" | base64 --decode`
+```
+kubectl get secret awx-demo-admin-password -o jsonpath="{.data.password}" | base64 --decode
+```
 
 username: admin
