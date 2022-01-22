@@ -18,14 +18,6 @@ kubectl apply -f awx-resources.yaml
 
 **Note**: the above command creates an `awx` namespace and deploys awx operator. ensure that the pod is in a running state prior to proceeding. you can watch in real time with
 
-```
-watch kubectl get pods
-```
-
-hit `ctrl-c` to exit
-
-
-
 **Changing the context**
 
 Lets change the context to `awx` namespace by executing the below command.
@@ -38,6 +30,13 @@ you are now working in the `awx` namespace
 
 **note**: you may need `sudo` for this command if it fails
 
+**Watch the Pods being built**
+
+```
+watch kubectl get pods
+```
+
+hit `ctrl-c` to exit when you see the two pods running
 
 
 **Deploying the awx instance**
