@@ -1,8 +1,12 @@
 # Deploy AWX-Operator on a Kubernetes node
 
-# Version to install
+# Release Version to install
 
-`0.15.0`
+This set of instructions should install the latest release of AWX. As of `01.22.2022` it will install the following
+
+AWX-Operator for kubernetes release version `0.16.0`
+
+AWX release version `19.5.1`
 
 # Pre-requisite
 
