@@ -103,12 +103,13 @@ awx-demo-postgres   ClusterIP   None          <none>        5432/TCP       34h
 awx-demo-service    NodePort    10.43.43.87   <none>        80:32000/TCP   34h
 ```
 
-next you will need to forward the `port` of `awx-demo-service` by doing the following in a separate terminal that you do not `ctrl-c` out of. just close the terminal once finished
+you should now be able to access `AWX-Operator` via web browser on your chosen port such as `http://<host-ip>:32000`.
+
+if this web page fails you will need to forward the `port` of `awx-demo-service` by doing the following in a separate terminal that you do not `ctrl-c` out of. just close the terminal once finished
 
 ```
 kubectl port-forward service/awx-demo-service 80:32000
 ```
-
 
 it should return something like this
 
@@ -120,7 +121,7 @@ Forwarding from [::1]:80 -> 32000
 
 **Getting password and logging in**
 
-you should now be able to access `AWX-Operator` via web browser on your chosen port such as `http://<host-ip>:32000`. before doing that you need to get the default admin password by entering the following
+if you need to get the default admin password you can do so by entering the following
 
 ```
 kubectl get secret awx-demo-admin-password -o jsonpath="{.data.password}" | base64 --decode
