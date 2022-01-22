@@ -80,7 +80,7 @@ currently it is running on port `31527` based on the above results (this is rand
 kubectl edit svc awx-demo-service
 ```
 
-this will bring up the list of configuration variables, look for the below section and change the `nodePort:31527` line to the `port` you wish
+this will bring up the list of configuration variables, look for the below section and change the `nodePort:31527` line to the `port` you wish. For example purposes I will change it all to port 32000. Any commands referencing port 32000 should be changed to your desired port
 
 ```
 ports:
