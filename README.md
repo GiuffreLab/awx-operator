@@ -2,11 +2,11 @@
 
 # Release Version to install
 
-This set of instructions should install the latest release of AWX. As of `03.01.2022` it will install the following
+This set of instructions should install the latest release of AWX. As of `03.29.2022` it will install the following
 
-AWX-Operator for kubernetes release version `0.17.0`
+AWX-Operator for kubernetes release version `0.19.0`
 
-AWX release version `20.0.0`
+AWX release version `20.0.1`
 
 # Pre-requisite
 
