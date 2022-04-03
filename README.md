@@ -128,7 +128,7 @@ Forwarding from [::1]:80 -> 32000
 if you need to get the default admin password you can do so by entering the following
 
 ```
-kubectl get secret awx-admin-password -o go-template='{{range $k,$v := .data}}{{printf "%s: " $k}}{{if not $v}}{{$v}}{{else}}{{$v | base64decode}}{{end}}{{"\n"}}{{end}}'
+kubectl get secret awx-demo-admin-password -o go-template='{{range $k,$v := .data}}{{printf "%s: " $k}}{{if not $v}}{{$v}}{{else}}{{$v | base64decode}}{{end}}{{"\n"}}{{end}}'
 ```
 
 username: admin
