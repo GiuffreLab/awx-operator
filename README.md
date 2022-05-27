@@ -80,54 +80,12 @@ awx-demo-postgres   ClusterIP   None          <none>        5432/TCP       34h
 awx-demo-service    NodePort    10.43.43.87   <none>        80:31527/TCP   34h
 ```
 
-currently it is running on port `31527` based on the above results (this is random every time its installed). to change it to a specific port of your choice (recommend `30000-32767` range for rancher / kubernetes) run the following
+currently it is running on port `31527` based on the above results (this is altered on `line 934` in the `awx-resources.yaml` file)
 
-```
-kubectl edit svc awx-demo-service
-```
 
-this will bring up the list of configuration variables, look for the below section and change the `nodePort:31527` line to the `port` you wish. For example purposes I will change it all to port 32000. Any commands referencing port 32000 should be changed to your desired port
+you should now be able to access `AWX-Operator` via web browser on your chosen port such as `http://<host-ip>:31527`
 
-```
-ports:
-  - name: http
-    nodePort: 31527
-    port: 80
-    protocol: TCP
-    targetPort: 8052
-```
-
-use the `down arrow` then hit the `instert` key, then make the change, hit `esc`, then type `:wq!`
-
-verify your `port` change with
-
-```
-kubectl get svc -l "app.kubernetes.io/managed-by=awx-operator"
-```
-
-as an example it is now on `port 32000`
-
-```
-NAME                TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
-awx-demo-postgres   ClusterIP   None          <none>        5432/TCP       34h
-awx-demo-service    NodePort    10.43.43.87   <none>        80:32000/TCP   34h
-```
-
-you should now be able to access `AWX-Operator` via web browser on your chosen port such as `http://<host-ip>:32000`.
-
-if this web page fails you will need to forward the `port` of `awx-demo-service` by doing the following in a separate terminal that you do not `ctrl-c` out of. just close the terminal once finished
-
-```
-kubectl port-forward service/awx-demo-service 80:32000
-```
-
-it should return something like this
-
-```
-Forwarding from 127.0.0.1:80 -> 32000
-Forwarding from [::1]:80 -> 32000
-```
-
+It will take a few minutes for the database to build before the web page access works some time and it should eventually start working.
 
 **Getting password and logging in**
 
