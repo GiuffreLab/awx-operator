@@ -8,15 +8,16 @@ AWX-Operator for kubernetes release version `0.20.0`
 
 AWX release version `20.1.0`
 
-It has been tested on the following server distrobutions
+It has been tested on the following server distributions
 - `Ubuntu`
 - `Rocky Linux`
 - `Debian`
 - `Fedora`
 
+If you want to install a specific version of AWX-Operator, alter `line 934` from `:latest` to whatever specific version you wish to install.
 # Pre-requisite
 
-makesure you have kubernetes running on a host with atleast 4 cpus & 6GB ram.
+make sure you have kubernetes running on a host with at least 4 cpus & 6GB ram.
 
 # Deploying awx operator, postgres, awx
 
@@ -80,7 +81,7 @@ awx-demo-postgres   ClusterIP   None          <none>        5432/TCP       34h
 awx-demo-service    NodePort    10.43.43.87   <none>        80:31527/TCP   34h
 ```
 
-currently it is running on port `31527` based on the above results (this is altered on `line 934` in the `awx-resources.yaml` file)
+currently it is running on port `31527` based on the above results (this is altered on `line 366` in the `awx-resources.yaml` file)
 
 
 you should now be able to access `AWX-Operator` via web browser on your chosen port such as `http://<host-ip>:31527`
