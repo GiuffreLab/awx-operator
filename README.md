@@ -1,99 +1,143 @@
-# Deploy AWX-Operator on a Kubernetes node
+# Basic AWX Install
 
-# Release Version to install
+You first need to build kustomization.yaml manifest that will build the 
+AWX-Operator Controller. 
 
-This set of instructions should install the latest release of AWX. As of `04.16.2022` it will install the following
+``` yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # Find the latest tag here: https://github.com/ansible/awx-operator/releases
+  - github.com/ansible/awx-operator/config/default?ref=latest
+  - awx-pvc.yaml  # Remove this if you are not using a PVC
+  - awx-manifest.yaml
 
-AWX-Operator for kubernetes release version `0.20.0`
+# Set the image tags to match the git version from above
+images:
+  - name: quay.io/ansible/awx-operator
+    newTag: latest
 
-AWX release version `20.1.0`
-
-It has been tested on the following server distributions
-- `Ubuntu`
-- `Rocky Linux`
-- `Debian`
-- `Fedora`
-
-If you want to install a specific version of AWX-Operator, alter `line 934` from `:latest` to whatever specific version you wish to install.
-# Pre-requisite
-
-make sure you have kubernetes running on a host with at least 4 cpus & 6GB ram.
-
-# Deploying awx operator, postgres, awx
-
-**AWX-Operator installation**
-
-```
-kubectl apply -f awx-resources.yaml
+# Specify a custom namespace in which to install AWX
+namespace: awx
 ```
 
-**Note**: the above command creates an `awx` namespace and deploys awx operator. ensure that the pod is in a running state prior to proceeding. you can watch in real time with
+# Basic Environment
 
-**Changing the context**
+You can set up a very basic version of AWX-Operator with this simple yaml file. What you put as the `metadata` name will be the name of the AWX-Operator deployment. This is important if you are deploying more than one AWX-Operator instance to the same namespace.
 
-Lets change the context to `awx` namespace by executing the below command.
+create an `awx-manifest.yaml` file with the below contents
 
-```
-kubectl config set-context --current --namespace=awx
-```
-
-you are now working in the `awx` namespace
-
-**note**: you may need `sudo` for this command if it fails
-
-**Watch the Pods being built**
-
-```
-watch kubectl get pods
+``` yaml
+apiVersion: awx.ansible.com/v1beta1
+kind: AWX
+metadata:
+  name: awx-demo
+  namespace: awx
+spec:
+  service_type: nodeport
+  ingress_type: none
+  hostname: awx-demo.example.com
 ```
 
-hit `ctrl-c` to exit when you see the two pods running
+# Environment with Persistence
+
+When you’re adding persistent storage to your AWX deployment in a  cluster, the steps often depend on the underlying infrastructure and the storage solutions available or already in place.
+
+For a K3s cluster, local path storage is available by default. If you don’t have a more complex storage solution (like NFS, Ceph, etc.), K3s automatically provisions storage from the local node's filesystem. 
+
+Here is the basic setup with the local path provisioner in a K3s cluster using local storage:
 
 
-**Deploying the awx instance**
+**Define a Persistent Volume Claim (PVC)**
+
+create an `awx-pvc.yaml` file withe the below contents
+
+``` yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: awx-pvc
+  namespace: awx
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi  # Modify the storage size as per your needs
+  storageClassName: standard  # Modify the storage class as per your needs
+```
+
+**Define the AWX Manifest**
+
+create an `awx-manifest.yaml` file with the below contents
+
+``` yaml
+apiVersion: awx.ansible.com/v1beta1
+kind: AWX
+metadata:
+  name: awx-demo
+  namespace: awx
+spec:
+  service_type: nodeport
+  ingress_type: none
+  hostname: awx-demo.example.com
+  tower_postgres_storage_class: standard  # Specify the storage class used by PostgreSQL
+  tower_postgres_storage_size: 20Gi  # It should be enough to specify just the storage size
+  web_nodeport: 32000  # Pre-define the NodePort for web GUI access (default range is 30000-32767)
 
 ```
-kubectl apply -f awx-demo.yaml
+
+# Deploy the Kustomization and Manifests
+
+``` bash
+kubectl apply -k .
 ```
 
-The above command deploys a `postgres` & `awx` instance. you can watch with the get pods command again
+you can watch the progress with
 
-
-
-# Accessing awx webui
-
-
-**Forward Ports to access the pod**
-
-there is service named `awx-demo-service` deployed that you will need to have ports forwarded before you can access it
-
-from the `awx` namespace run the following
-
+``` bash
+kubectl get pods -n awx --watch
 ```
+
+This will take some time to build, and the web GUI will not be available for a few minutes even after the pods show they are Running.
+
+Your final deployment can be verified by running the following, and the results will look similar.
+
+``` bash
+kubectl get pods -l "app.kubernetes.io/managed-by=awx-operator" -n awx
+NAME                             READY   STATUS    RESTARTS   AGE
+awx-demo-postgres-13-0           1/1     Running   0          47h
+awx-demo-task-68d5bb94fc-46872   4/4     Running   0          47h
+awx-demo-web-594cc6c687-bpfqb    3/3     Running   0          47h
+```
+
+# Last steps before logging in
+
+Before you can login you need to confirm your `web_nodeport` for the web GUI (pre-defined in the `awx-manifest.yaml` file)
+
+confirm it by running the following command
+
+```bash
 kubectl get svc -l "app.kubernetes.io/managed-by=awx-operator"
+NAME                TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+awx-demo-postgres   ClusterIP   None           <none>        5432/TCP       4m4s
+awx-demo-service    NodePort    10.109.40.38   <none>        80:32000/TCP   3m56s
 ```
 
-it will return the following example showing what `port` `awx-demo-service` is running on
+Note that this deployment shows our `web_nodeport` on the line with `awx-demo-service` as its type is `nodeport` and the internal port is `80` and the external port for GUI access is `32000`
 
+
+# First time login
+
+Now that you know your Web GUI port, it should be reachable from the host's `IP:Port`
+
+The initial login uses the following credentials
+
+Username: `admin`
+
+The default password is found by running this command and copying the `echo` statement.
+
+``` bash
+$ kubectl get secret awx-demo-admin-password -o jsonpath="{.data.password}" | base64 --decode ; echo
+yDL2Cx5Za94g9MvBP6B73nzVLlmfgPjR
 ```
-NAME                TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
-awx-demo-postgres   ClusterIP   None          <none>        5432/TCP       34h
-awx-demo-service    NodePort    10.43.43.87   <none>        80:31527/TCP   34h
-```
-
-currently it is running on port `31527` based on the above results (this is altered on `line 366` in the `awx-resources.yaml` file)
-
-
-you should now be able to access `AWX-Operator` via web browser on your chosen port such as `http://<host-ip>:31527`
-
-It will take a few minutes for the database to build before the web page access works some time and it should eventually start working.
-
-**Getting password and logging in**
-
-if you need to get the default admin password you can do so by entering the following
-
-```
-kubectl get secret awx-demo-admin-password -o go-template='{{range $k,$v := .data}}{{printf "%s: " $k}}{{if not $v}}{{$v}}{{else}}{{$v | base64decode}}{{end}}{{"\n"}}{{end}}'
-```
-
-username: admin
