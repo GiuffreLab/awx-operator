@@ -23,7 +23,7 @@ namespace: awx
 
 # Basic Environment
 
-You can set up a very basic version of AWX-Operator with this simple yaml file. What you put as the `metadata` name will be the name of the AWX-Operator deployment. This is important if you are deploying more than one AWX-Operator instance to the same namespace.
+You can set up a very basic version of AWX-Operator with this simple yaml file. What you put as the `metadata` name will be the name of the AWX-Operator deployment. This is important if you are deploying more than one AWX-Operator instance to the same namespace. **If you do not want persistent storage, this would be your `awx-manifest.yaml` file.**
 
 create an `awx-manifest.yaml` file with the below contents
 
@@ -68,6 +68,8 @@ spec:
 ```
 
 **Define the AWX Manifest**
+
+**This is the `awx-manifest.yaml` file in the repo.**
 
 create an `awx-manifest.yaml` file with the below contents
 
