@@ -9,4 +9,4 @@ spec:
   resources:
     requests:
       storage: 20Gi  # Modify the storage size as per your needs
-  storageClassName: standard  # Modify the storage class as per your needs
+  storageClassName: local-path  # Modify the storage class as per your needs
