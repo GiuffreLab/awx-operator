@@ -1,6 +1,6 @@
 # Basic AWX Install
 
-You first need to build kustomization.yaml manifest that will build the 
+You first need to build `kustomization.yaml` manifest that will build the 
 AWX-Operator Controller. 
 
 ``` yaml
