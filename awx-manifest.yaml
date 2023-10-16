@@ -4,6 +4,7 @@ metadata:
   name: awx-demo
 spec:
   service_type: nodeport
+  nodeport_port: 32000
   ingress_type: none
   hostname: awx-demo.example.com
   projects_persistence: true
