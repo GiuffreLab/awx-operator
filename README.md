@@ -114,18 +114,29 @@ awx-demo-web-594cc6c687-bpfqb    3/3     Running   0          47h
 
 # Last steps before logging in
 
-Before you can login you need to confirm your `web_nodeport` for the web GUI (pre-defined in the `awx-manifest.yaml` file)
+Before you can login you need to confirm your `web_nodeport` for the web GUI.
 
 confirm it by running the following command
 
-```bash
+``` bash
 kubectl get svc -l "app.kubernetes.io/managed-by=awx-operator"
+```
+
+it should return something like this
+
+```bash
 NAME                TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
 awx-demo-postgres   ClusterIP   None           <none>        5432/TCP       4m4s
 awx-demo-service    NodePort    10.109.40.38   <none>        80:32000/TCP   3m56s
 ```
 
-Note that this deployment shows our `web_nodeport` on the line with `awx-demo-service` as its type is `nodeport` and the internal port is `80` and the external port for GUI access is `32000`
+You can custom set the node port after deployment with this command. Adjust the `value` field to the port you want.
+
+``` bash
+kubectl patch svc awx-demo-service -n awx --type='json' -p '[{"op": "replace", "path": "/spec/ports/0/nodePort", "value":32000}]'
+```
+
+Ensure the specific NodePort you're trying to assign is within the allowed NodePort range in your Kubernetes cluster (default is 30000-32767) and is not being used by another service.
 
 
 # First time login
