@@ -64,7 +64,7 @@ spec:
   resources:
     requests:
       storage: 20Gi  # Modify the storage size as per your needs
-  storageClassName: standard  # Modify the storage class as per your needs
+  storageClassName: local-path  # Modify the storage class as per your needs
 ```
 
 **Define the AWX Manifest**
@@ -78,14 +78,13 @@ apiVersion: awx.ansible.com/v1beta1
 kind: AWX
 metadata:
   name: awx-demo
-  namespace: awx
 spec:
   service_type: nodeport
   ingress_type: none
   hostname: awx-demo.example.com
-  tower_postgres_storage_class: standard  # Specify the storage class used by PostgreSQL
-  tower_postgres_storage_size: 20Gi  # It should be enough to specify just the storage size
-  web_nodeport: 32000  # Pre-define the NodePort for web GUI access (default range is 30000-32767)
+  projects_persistence: true
+  projects_existing_claim: awx-pvc
+  projects_storage_size: 20Gi
 
 ```
 
