@@ -140,6 +140,5 @@ Username: `admin`
 The default password is found by running this command and copying the `echo` statement.
 
 ``` bash
-$ kubectl get secret awx-demo-admin-password -o jsonpath="{.data.password}" | base64 --decode ; echo
-yDL2Cx5Za94g9MvBP6B73nzVLlmfgPjR
+kubectl get secret awx-demo-admin-password -n awx -o jsonpath="{.data.password}" | base64 --decode ; echo
 ```
