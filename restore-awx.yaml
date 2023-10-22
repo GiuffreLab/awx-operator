@@ -1,9 +1,0 @@
-apiVersion: awx.ansible.com/v1beta1
-kind: AWXRestore
-metadata:
-  name: awxrestore-2023-10-17
-  namespace: awx
-spec:
-  backup_pvc: awx-pvc
-  backup_name: awxbackup-2023-10-16
-  deployment_name: awx-demo
