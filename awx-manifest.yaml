@@ -4,9 +4,6 @@ metadata:
   name: awx-demo
 spec:
   service_type: nodeport
-  nodeport_port: 32000
+  nodeport_port: 32000    # Adjust the port to the port number you wish
   ingress_type: none
   hostname: awx-demo.example.com
-  projects_persistence: true
-  projects_existing_claim: awx-pvc
-  projects_storage_size: 20Gi
