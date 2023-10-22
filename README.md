@@ -56,6 +56,9 @@ Your final deployment can be verified by running the following, and the results 
 
 ``` bash
 kubectl get pods -l "app.kubernetes.io/managed-by=awx-operator" -n awx
+```
+
+``` bash
 NAME                             READY   STATUS    RESTARTS   AGE
 awx-demo-postgres-13-0           1/1     Running   0          47h
 awx-demo-task-68d5bb94fc-46872   4/4     Running   0          47h
