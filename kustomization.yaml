@@ -3,13 +3,12 @@ kind: Kustomization
 resources:
   # Find the latest tag here: https://github.com/ansible/awx-operator/releases
   - github.com/ansible/awx-operator/config/default?ref=2.7.0
-  - awx-pvc.yaml  # Remove this if you are not using a PVC
   - awx-manifest.yaml
 
-# Set the image tags to match the git version from above
+  # Set the image tags to match the git version from above
 images:
   - name: quay.io/ansible/awx-operator
     newTag: 2.7.0
 
-# Specify a custom namespace in which to install AWX
+  # Specify a custom namespace in which to install AWX
 namespace: awx
