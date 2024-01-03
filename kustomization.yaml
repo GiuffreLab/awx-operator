@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
   # Find the latest tag here: https://github.com/ansible/awx-operator/releases
   - github.com/ansible/awx-operator/config/default?ref=2.9.0
-  - namespace.yaml
   - awx-manifest.yaml
 
   # Set the image tags to match the git version from above
