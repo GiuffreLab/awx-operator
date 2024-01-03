@@ -40,6 +40,14 @@ spec:
 
 # Deploy the Kustomization and Manifests
 
+Create the namespace
+
+``` bash
+kubectl create namespace awx
+```
+
+Deploy the resources
+
 ``` bash
 kubectl apply -k .
 ```
