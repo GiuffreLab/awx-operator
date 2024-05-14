@@ -37,6 +37,12 @@ spec:
   ingress_type: none
   hostname: awx-demo.example.com
 ```
+In the event that you run into `CrashLoop` problems with the `postgres` pod, you can add these lines under the `spec` section.
+
+``` yaml
+  postgres_init_container_resource_requirements: {}
+  postgres_data_volume_init: true
+```
 
 # Deploy the Kustomization and Manifests
 
