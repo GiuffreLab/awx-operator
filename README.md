@@ -36,6 +36,8 @@ spec:
   nodeport_port: 32000    # Adjust the port to the port number you wish
   ingress_type: none
   hostname: awx-demo.example.com
+  postgres_init_container_resource_requirements: {}
+  postgres_data_volume_init: true
 ```
 
 # Deploy the Kustomization and Manifests
