@@ -5,7 +5,6 @@ namespace: awx
 
 resources:
   # Find the latest tag here: https://github.com/ansible/awx-operator/releases
-  - namespace.yaml
   - github.com/ansible/awx-operator/config/default?ref=2.19.1
   - awx-manifest.yaml
 
