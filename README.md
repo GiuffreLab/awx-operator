@@ -6,6 +6,9 @@ AWX-Operator Controller.
 ``` yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
+namespace: awx
+
 resources:
   # Find the latest tag here: https://github.com/ansible/awx-operator/releases
   - github.com/ansible/awx-operator/config/default?ref=2.19.1
@@ -15,9 +18,12 @@ resources:
 images:
   - name: quay.io/ansible/awx-operator
     newTag: 2.19.1
-
-  # Specify a custom namespace in which to install AWX
-namespace: awx
+  # The kubebuilder project moved the kube-rbac-proxy image to the Kubernetes community
+  # registry at registry.k8s.io. This fixes the image reference for the kube-rbac-proxy
+  # used by the awx-operator to correct the crashloop errors. 
+  - name: gcr.io/kubebuilder/kube-rbac-proxy:v0.15.0
+    newName: registry.k8s.io/kubebuilder/kube-rbac-proxy
+    newTag: v0.15.0
 ```
 
 # Basic Environment
